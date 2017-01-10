@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  RecordSoundsViewController.swift
 //  PitchPerfect
 //
 //  Created by 남상욱 on 2017. 1. 10..
@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import AVFoundation
 
-class ViewController: UIViewController {
+class RecordSoundsViewController: UIViewController {
 
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var recordingLabel: UILabel!
     @IBOutlet weak var stopRecordingButton: UIButton!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
