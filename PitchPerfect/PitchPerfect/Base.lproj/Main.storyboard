@@ -54,11 +54,14 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="recordButton" destination="kDs-tG-7HT" id="RGK-dJ-jeo"/>
                         <outlet property="recordingLabel" destination="tgk-iz-dhN" id="6RJ-k0-22V"/>
+                        <outlet property="stopRecordingButton" destination="oAr-8k-i1L" id="vl5-v8-VRD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="76" y="38.23088455772114"/>
         </scene>
     </scenes>
 </document>
