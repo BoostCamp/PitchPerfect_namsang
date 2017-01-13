@@ -26,6 +26,7 @@ class PlaySoundsViewController: UIViewController {
     var audioPlayerNode: AVAudioPlayerNode!
     var stopTimer: Timer!
     
+    
     enum ButtonType: Int {
         case slow = 0, fast, chipmunk, vader, echo, reverb
     }
@@ -52,6 +53,7 @@ class PlaySoundsViewController: UIViewController {
     }
     
     @IBAction func stopButtonPressed(_ sender: AnyObject){
+        
         stopAudio()
     }
     
@@ -78,5 +80,12 @@ class PlaySoundsViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        print("viewDidDisappear in playSoundsView")
+        let fileManager = FileManager.default
+        do {
+            try fileManager.removeItem(atPath: recordedAudioURL.absoluteString)
+        } catch let error {
+            print("Deleting Error : \(error)")
+        }
     }
 }

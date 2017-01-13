@@ -60,7 +60,9 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         changeUIState(RecordingState.recording)
         
         let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-        let recordingName = "recordedVoice.wav"
+        
+        let nowDate: String = getCurrentDate()
+        let recordingName = "recordedVoice_" + nowDate + ".wav"
         let pathArray = [dirPath, recordingName]
         let filePath = URL(string: pathArray.joined(separator: "/"))
         
@@ -73,8 +75,6 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         audioRecorder.isMeteringEnabled = true
         audioRecorder.prepareToRecord()
         audioRecorder.record()
-        
-        print(getCurrentDate())
     }
     
     @IBAction func stopRecording(_ sender: Any) {
@@ -124,7 +124,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     func getCurrentDate() -> String {
         let dateTime = Date()
         let formatter = DateFormatter()
-        formatter.dateFormat = "YYYY/MM/DD HH:mm:ss"
+        formatter.dateFormat = "YY-MM-DD_HH.mm.ss"
         let currentDate = formatter.string(from: dateTime)
         
         return currentDate
