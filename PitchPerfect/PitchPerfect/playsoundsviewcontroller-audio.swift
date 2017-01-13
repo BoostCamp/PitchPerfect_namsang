@@ -25,6 +25,7 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
         static let AudioRecordingError = "Audio Recording Error"
         static let AudioFileError = "Audio File Error"
         static let AudioEngineError = "Audio Engine Error"
+        static let AudioPlayerError = "Audio Player Error"
     }
     
     // MARK: PlayingState (raw values correspond to sender tags)
@@ -82,6 +83,9 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
         } else {
             connectAudioNodes(audioPlayerNode, changeRatePitchNode, audioEngine.outputNode)
         }
+
+        //Timer를 통해서 남은 시간을 표시해줄 것입니다.
+        self.remainTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlaySoundsViewController.calRemainTime), userInfo: nil, repeats: true)
         
         // schedule to play and start the engine!
         audioPlayerNode.stop()

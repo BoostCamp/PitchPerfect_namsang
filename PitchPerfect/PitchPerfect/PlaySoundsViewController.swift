@@ -18,6 +18,7 @@ class PlaySoundsViewController: UIViewController {
     @IBOutlet weak var vaderButton: UIButton! // Low-pitched sound
     @IBOutlet weak var echoButton: UIButton! // Echo sound
     @IBOutlet weak var reverbButton: UIButton! // Reverb sound
+    @IBOutlet weak var remainTimeLabel: UILabel! // duration, 남은 재생 시간
     @IBOutlet weak var stopButton: UIButton!
     
     var recordedAudioURL: URL!
@@ -25,8 +26,9 @@ class PlaySoundsViewController: UIViewController {
     var audioEngine: AVAudioEngine!
     var audioPlayerNode: AVAudioPlayerNode!
     var stopTimer: Timer!
-    
-    
+    var remainTimer: Timer! // 남은 시간 타이머
+    var audioPlayer: AVAudioPlayer! // 남은 시간을 위함
+    var recordedFilePlayTime: Int!
     enum ButtonType: Int {
         case slow = 0, fast, chipmunk, vader, echo, reverb
     }
@@ -48,8 +50,18 @@ class PlaySoundsViewController: UIViewController {
         case .reverb:
             playSound(reverb: true)
         }
-        
+
+        // playback
         configureUI(.playing)
+        
+        do {
+            //recordedAudioURL의 컨텐츠를 가지는 AVAudioPlayer 생성
+          audioPlayer = try AVAudioPlayer(contentsOf: recordedAudioURL as URL)
+        } catch let error {
+            showAlert(Alerts.AudioPlayerError, message: String(describing: error))
+        }
+        self.recordedFilePlayTime = Int(audioPlayer.duration) //recordedAudioURL로 duration을 구함.
+        
     }
     
     @IBAction func stopButtonPressed(_ sender: AnyObject){
@@ -85,7 +97,24 @@ class PlaySoundsViewController: UIViewController {
         do {
             try fileManager.removeItem(atPath: recordedAudioURL.absoluteString)
         } catch let error {
-            print("Deleting Error : \(error)")
+            showAlert("FileManager", message: String(describing: error))
+        }
+    }
+    
+    // MARK: general functions
+    
+    func calRemainTime(){
+        if recordedFilePlayTime < 1 {
+            // 재생시간이 0으로 갈 때, Timer를 invalidate 시킴.
+            self.remainTimer.invalidate()
+        } else {
+            let hour: String = String(format: "%02d", self.recordedFilePlayTime / 3600)
+            let minute: String = String(format: "%02d", self.recordedFilePlayTime % 3600 / 60)
+            let second: String = String(format: "%02d", self.recordedFilePlayTime % 60)
+            
+            //AVAudioPlayer.duration으로 얻은 녹음 파일 플레이 시간을 시, 분, 초로 계산해서 Label에 표시
+            self.remainTimeLabel.text = "\(hour):\(minute):\(second)"
+            self.recordedFilePlayTime = self.recordedFilePlayTime - 1 // 1씩 값을 감소하여
         }
     }
 }
