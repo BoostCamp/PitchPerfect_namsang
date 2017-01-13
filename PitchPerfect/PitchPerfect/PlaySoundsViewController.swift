@@ -11,12 +11,13 @@ import AVFoundation
 
 class PlaySoundsViewController: UIViewController {
 
-    @IBOutlet weak var snailButton: UIButton!
-    @IBOutlet weak var chipmunkButton: UIButton!
-    @IBOutlet weak var rabbitButton: UIButton!
-    @IBOutlet weak var vaderButton: UIButton!
-    @IBOutlet weak var echoButton: UIButton!
-    @IBOutlet weak var reverbButton: UIButton!
+    
+    @IBOutlet weak var snailButton: UIButton! // Slow sound
+    @IBOutlet weak var chipmunkButton: UIButton! // High-pitched sound
+    @IBOutlet weak var rabbitButton: UIButton! // Fast sound
+    @IBOutlet weak var vaderButton: UIButton! // Low-pitched sound
+    @IBOutlet weak var echoButton: UIButton! // Echo sound
+    @IBOutlet weak var reverbButton: UIButton! // Reverb sound
     @IBOutlet weak var stopButton: UIButton!
     
     var recordedAudioURL: URL!
@@ -29,8 +30,9 @@ class PlaySoundsViewController: UIViewController {
         case slow = 0, fast, chipmunk, vader, echo, reverb
     }
     
+    // MARK: IBAction functions for audio effects
+    
     @IBAction func playSoundForButton(_ sender: UIButton){
-        print("play sound button pressed")
         switch(ButtonType(rawValue: sender.tag)!){
         case .slow:
             playSound(rate: 0.5)
@@ -50,9 +52,10 @@ class PlaySoundsViewController: UIViewController {
     }
     
     @IBAction func stopButtonPressed(_ sender: AnyObject){
-        print("stop audio button pressed")
         stopAudio()
     }
+    
+    // MARK: ViewController Lifecycle override method
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,22 +65,18 @@ class PlaySoundsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewWillAppear called")
         configureUI(.notPlaying)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("viewDidAppear called")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("viewWillDisappear called")
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        print("viewDidDisappear called")
     }
 }

@@ -15,39 +15,51 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var recordingLabel: UILabel!
+    @IBOutlet weak var resumeRecordingButton: UIButton!
+    @IBOutlet weak var pauseRecordingButton: UIButton!
     @IBOutlet weak var stopRecordingButton: UIButton!
+    
+    let STORYBOARD_SEGUE_IDENTIFIER_OF_STOP_RECORDING = "stopRecording"
+    
+    // 0: 초기셋팅(최초시작, 중지), 1: 녹음중, 2: 중지된, 3: 재개된
+    enum RecordingState: Int {
+        case initSetting = 0, recording, paused, resumed
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        stopRecordingButton.isEnabled = false
+        // 최초 앱을 실행시키면 재시작, 일시정지, 중지 버튼을 숨김
+        changeUIState(RecordingState.initSetting)
     }
 
+    // MARK: ViewController Lifecycle override method
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewWillAppear called")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("viewDidAppear called")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("viewWillDisappear called")
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        print("viewDidDisappear called")
     }
     
+    
+    // MARK: IBAction functions for recording state
+
+    
     @IBAction func recordAudio(_ sender: Any) {
-        recordingLabel.text = "Recording in Progress"
-        stopRecordingButton.isEnabled = true
-        recordButton.isEnabled = false
+        // 녹음 시작 버튼을 누르면 UI를 변경해 줍니다.
+        changeUIState(RecordingState.recording)
         
-        let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0] as String
+        let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let recordingName = "recordedVoice.wav"
         let pathArray = [dirPath, recordingName]
         let filePath = URL(string: pathArray.joined(separator: "/"))
@@ -61,32 +73,89 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         audioRecorder.isMeteringEnabled = true
         audioRecorder.prepareToRecord()
         audioRecorder.record()
+        
+        print(getCurrentDate())
     }
     
     @IBAction func stopRecording(_ sender: Any) {
-        print("stop recording button was was pressed")
-        stopRecordingButton.isEnabled = false
-        recordButton.isEnabled = true
-        recordingLabel.text = "Tap to Record"
+        // 녹음을 마치면 UI 셋팅을 초기화 해줍니다.
+        changeUIState(RecordingState.initSetting)
         audioRecorder.stop()
+        
         let audioSession = AVAudioSession.sharedInstance()
         try! audioSession.setActive(false)
     }
     
+    @IBAction func resumeRecording(_ sender: Any) {
+        // 녹음을 재개하면 UI를 변경해 줍니다.
+        changeUIState(RecordingState.resumed)
+        // 녹음 재개
+        audioRecorder.record()
+    }
+    
+    @IBAction func pauseRecording(_ sender: Any) {
+        // 녹음을 일시정지하면 UI를 변경해 줍니다.
+        changeUIState(RecordingState.paused)
+        // 녹음 일시정지
+        audioRecorder.pause()
+    }
+    
+    // MARK: audioRecorderDidFinishRecording of AVAudioRecorderDelegate
+    
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         if flag {
-            performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url)
+            performSegue(withIdentifier: STORYBOARD_SEGUE_IDENTIFIER_OF_STOP_RECORDING, sender: audioRecorder.url)
         } else {
             print("recording was not successful")
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "stopRecording" {
-            let playSoundsVC = segue.destination as! PlaySoundsViewController
+        if segue.identifier == STORYBOARD_SEGUE_IDENTIFIER_OF_STOP_RECORDING {
+            let playSoundsViewController = segue.destination as! PlaySoundsViewController
             let recordedAudioURL = sender as! URL
-            playSoundsVC.recordedAudioURL = recordedAudioURL
+            playSoundsViewController.recordedAudioURL = recordedAudioURL
+            
         }
     }
+    
+    // MARK: general function
+    
+    func getCurrentDate() -> String {
+        let dateTime = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "YYYY/MM/DD HH:mm:ss"
+        let currentDate = formatter.string(from: dateTime)
+        
+        return currentDate
+    }
+    
+    
+    // 0: 초기셋팅(최초시작, 중지), 1: 녹음중, 2: 중지된, 3: 재개된
+    func changeUIState(_ recordingState: RecordingState) {
+        switch(recordingState) {
+        case .initSetting: // 앱을 최초 실행 했을 때, 녹음을 끝마칠 때 셋팅
+            recordingLabel.text = "Tap to Record"
+            recordButton.isEnabled = true
+            resumeRecordingButton.isHidden = true
+            pauseRecordingButton.isHidden = true
+            stopRecordingButton.isHidden = true
+        case .recording: // 녹음 시작 버튼을 눌렀을 때
+            recordingLabel.text = "Recording in Progress"
+            recordButton.isEnabled = false
+            resumeRecordingButton.isHidden = true
+            pauseRecordingButton.isHidden = false
+            stopRecordingButton.isHidden = false
+        case .paused: // 녹음 일시정지 버튼을 눌렀을 때
+            recordingLabel.text = "Recording has been paused"
+            pauseRecordingButton.isHidden = true
+            resumeRecordingButton.isHidden = false
+        case .resumed: // 녹음 재개 버튼을 눌렀을 때
+            recordingLabel.text = "Recording in Progress"
+            pauseRecordingButton.isHidden = false
+            resumeRecordingButton.isHidden = true
+        }
+    }
+    
 }
 
