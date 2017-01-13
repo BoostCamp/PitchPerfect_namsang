@@ -112,17 +112,17 @@
                                 <rect key="frame" x="16" y="64" width="343" height="583"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="3uU-PJ-17W">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="151.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="151"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KrC-7C-U1j" userLabel="Slow Button">
-                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="151.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="151"/>
                                                 <state key="normal" image="snail"/>
                                                 <connections>
                                                     <action selector="playSoundForButton:" destination="zTI-Fp-LVb" eventType="touchUpInside" id="WHR-0Q-Pz1"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RDV-Gx-3pw" userLabel="Fast Button">
-                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="151.5"/>
+                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="151"/>
                                                 <state key="normal" image="fast"/>
                                                 <connections>
                                                     <action selector="playSoundForButton:" destination="zTI-Fp-LVb" eventType="touchUpInside" id="4gp-Ny-zdh"/>
@@ -131,17 +131,17 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="LBE-vO-5B8">
-                                        <rect key="frame" x="0.0" y="151.5" width="343" height="152"/>
+                                        <rect key="frame" x="0.0" y="151" width="343" height="150.5"/>
                                         <subviews>
                                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zkr-de-iGK" userLabel="High Pitch Button">
-                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="152"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="150.5"/>
                                                 <state key="normal" image="chipmunk"/>
                                                 <connections>
                                                     <action selector="playSoundForButton:" destination="zTI-Fp-LVb" eventType="touchUpInside" id="hhK-9G-Dif"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rEM-Bs-mfE" userLabel="Low Pitch Button">
-                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="152"/>
+                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="150.5"/>
                                                 <state key="normal" image="darthvader"/>
                                                 <connections>
                                                     <action selector="playSoundForButton:" destination="zTI-Fp-LVb" eventType="touchUpInside" id="mTF-vv-7u9"/>
@@ -150,17 +150,17 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="wWZ-wx-R8F">
-                                        <rect key="frame" x="0.0" y="303.5" width="343" height="151.5"/>
+                                        <rect key="frame" x="0.0" y="301.5" width="343" height="151"/>
                                         <subviews>
                                             <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QOU-Qs-kdc" userLabel="Echo Button">
-                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="151.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="151"/>
                                                 <state key="normal" image="echo"/>
                                                 <connections>
                                                     <action selector="playSoundForButton:" destination="zTI-Fp-LVb" eventType="touchUpInside" id="VCZ-TE-cwl"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZWh-sw-npu" userLabel="Reverb Button">
-                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="151.5"/>
+                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="151"/>
                                                 <state key="normal" image="reverb"/>
                                                 <connections>
                                                     <action selector="playSoundForButton:" destination="zTI-Fp-LVb" eventType="touchUpInside" id="Jq5-Fe-2Mt"/>
@@ -169,10 +169,13 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TFV-om-R01">
-                                        <rect key="frame" x="0.0" y="455" width="343" height="64"/>
+                                        <rect key="frame" x="0.0" y="452.5" width="343" height="66.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kgh-Dh-8pN">
-                                                <rect key="frame" x="0.0" y="0.0" width="343" height="64"/>
+                                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gyJ-KV-37p" userLabel="Remain Time Progress View">
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="2"/>
+                                            </progressView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="남은 재생 시간 : 00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kgh-Dh-8pN">
+                                                <rect key="frame" x="0.0" y="2" width="343" height="64.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -210,6 +213,7 @@
                         <outlet property="echoButton" destination="QOU-Qs-kdc" id="4eD-uz-NKq"/>
                         <outlet property="rabbitButton" destination="RDV-Gx-3pw" id="GJF-cF-y7p"/>
                         <outlet property="remainTimeLabel" destination="kgh-Dh-8pN" id="8og-jK-cR1"/>
+                        <outlet property="remainTimeProgressView" destination="gyJ-KV-37p" id="ctA-1z-OHb"/>
                         <outlet property="reverbButton" destination="ZWh-sw-npu" id="ukt-tu-NNm"/>
                         <outlet property="snailButton" destination="KrC-7C-U1j" id="a9u-bd-2yT"/>
                         <outlet property="stopButton" destination="drH-1A-0G8" id="DTQ-En-FKG"/>

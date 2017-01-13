@@ -18,6 +18,7 @@ class PlaySoundsViewController: UIViewController {
     @IBOutlet weak var vaderButton: UIButton! // Low-pitched sound
     @IBOutlet weak var echoButton: UIButton! // Echo sound
     @IBOutlet weak var reverbButton: UIButton! // Reverb sound
+    @IBOutlet weak var remainTimeProgressView: UIProgressView! // duration, 남은 재생 시간을 Progress View로 표시
     @IBOutlet weak var remainTimeLabel: UILabel! // duration, 남은 재생 시간
     @IBOutlet weak var stopButton: UIButton!
     
@@ -27,8 +28,11 @@ class PlaySoundsViewController: UIViewController {
     var audioPlayerNode: AVAudioPlayerNode!
     var stopTimer: Timer!
     var remainTimer: Timer! // 남은 시간 타이머
-    var audioPlayer: AVAudioPlayer! // 남은 시간을 위함
-    var recordedFilePlayTime: Int!
+    var audioPlayer: AVAudioPlayer! // 실제 재생파일의 재생 시간을 알기 위함
+    var recordedFilePlayTime: Double! // 실제 녹음된 재생파일의 시간
+    var playTimeOfSoundEffect: Double! // 녹음 변조 별 재생되는 시간
+    var remainTimeforProgressViewTerm: Float! // 녹음 변조 별 1초간 쌓일 %의 크기
+    
     enum ButtonType: Int {
         case slow = 0, fast, chipmunk, vader, echo, reverb
     }
@@ -60,12 +64,14 @@ class PlaySoundsViewController: UIViewController {
         } catch let error {
             showAlert(Alerts.AudioPlayerError, message: String(describing: error))
         }
-        self.recordedFilePlayTime = Int(audioPlayer.duration) //recordedAudioURL로 duration을 구함.
-        
+        self.recordedFilePlayTime = Double(audioPlayer.duration) //recordedAudioURL로 duration을 구함.
+       
+        //녹음 변조 별로 재생할 때, Progress View 에 1초마다 진행됨을 볼 수 있게 계산.
+        remainTimeforProgressViewTerm = Float(1.0 / playTimeOfSoundEffect)
     }
     
     @IBAction func stopButtonPressed(_ sender: AnyObject){
-        
+        self.remainTimeProgressView.setProgress(0.0, animated: false)
         stopAudio()
     }
     
@@ -74,6 +80,8 @@ class PlaySoundsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAudio()
+        // Reset remainTimeProgressView
+        self.remainTimeProgressView.setProgress(0.0, animated: false)
         // Do any additional setup after loading the view.
     }
 
@@ -102,19 +110,23 @@ class PlaySoundsViewController: UIViewController {
     }
     
     // MARK: general functions
-    
+  
     func calRemainTime(){
-        if recordedFilePlayTime < 1 {
+        if playTimeOfSoundEffect < 1 {
             // 재생시간이 0으로 갈 때, Timer를 invalidate 시킴.
             self.remainTimer.invalidate()
+            self.remainTimeLabel.text = "남은 재생 시간 : 00:00:00"
+            self.remainTimeProgressView.setProgress(0.0, animated: false)
+            
         } else {
-            let hour: String = String(format: "%02d", self.recordedFilePlayTime / 3600)
-            let minute: String = String(format: "%02d", self.recordedFilePlayTime % 3600 / 60)
-            let second: String = String(format: "%02d", self.recordedFilePlayTime % 60)
+            let hour: String = String(format: "%02d", Int(self.playTimeOfSoundEffect) / 3600)
+            let minute: String = String(format: "%02d", Int(self.playTimeOfSoundEffect) % 3600 / 60)
+            let second: String = String(format: "%02d", Int(self.playTimeOfSoundEffect) % 60)
             
             //AVAudioPlayer.duration으로 얻은 녹음 파일 플레이 시간을 시, 분, 초로 계산해서 Label에 표시
-            self.remainTimeLabel.text = "\(hour):\(minute):\(second)"
-            self.recordedFilePlayTime = self.recordedFilePlayTime - 1 // 1씩 값을 감소하여
+            self.remainTimeLabel.text = "남은 재생 시간 : \(hour):\(minute):\(second)"
+            self.remainTimeProgressView.setProgress(self.remainTimeProgressView.progress + remainTimeforProgressViewTerm, animated: true)
+            self.playTimeOfSoundEffect = self.playTimeOfSoundEffect - 1.0 // 1씩 값을 감소하여
         }
     }
 }

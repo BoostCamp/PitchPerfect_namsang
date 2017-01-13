@@ -84,6 +84,16 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
             connectAudioNodes(audioPlayerNode, changeRatePitchNode, audioEngine.outputNode)
         }
 
+        // PlayTime을 계산하는 부분.
+        var getPlayTime: Double = 0.0
+        
+        if let rate = rate {
+            getPlayTime = Double(self.audioFile.length) / Double(self.audioFile.processingFormat.sampleRate) / Double(rate)
+        } else {
+            getPlayTime = Double(self.audioFile.length) / Double(self.audioFile.processingFormat.sampleRate)
+        }
+        
+        self.playTimeOfSoundEffect = getPlayTime
         //Timer를 통해서 남은 시간을 표시해줄 것입니다.
         self.remainTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlaySoundsViewController.calRemainTime), userInfo: nil, repeats: true)
         
